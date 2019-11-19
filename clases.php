@@ -1,41 +1,41 @@
 <?php
 
-    class Usuario {            
+    class Admin{
+        public $id;       
         public $username;        
-        public $id;
-        public $rol;        
-    }
-
-    class Admin extends Usuario {
+        public $rol = "Admin"; 
         public $username;
-        public $rol = "Admin";  
     }
 
-    class Cliente extends Usuario {    
+    class Cliente{ 
+        public $id;       
+        public $username;            
         public $rol = "Client";
         public $CuentadeAhorros;     
         public $TarjetadeCredito = [];       
         public $Credito;
     }
 
-    class Producto {            
+    class CuentadeAhorros extends Producto { 
         public $id;
         public $Owner;   
-        public $tipo;     
-    }
-
-    class CuentadeAhorros extends Producto {                
+        public $tipo = 'CuentaAhorros';                
         public $JaveCoins;
     }
 
-    class Credito extends Producto {                
+    class Credito extends Producto { 
+        public $id;
+        public $Owner;   
+        public $tipo = 'Credito';               
         public $TasaInteres;
         public $FechaDePago;
         public $Aprobado;
     }
 
     class TarjetadeCredito extends Producto {
-        public $tipo = 'TarjetaDeCredito';
+        public $id;
+        public $Owner;   
+        public $tipo = 'TarjetaCredito'; 
         public $CupoMax;
         public $Sobrecupo;
         public $CuotaManejo;
