@@ -6,7 +6,9 @@
 	</head>
 	<body>
 		<?php		
-            echo '<h1>Ventana principal</h1>';
+			echo '<h1>Ventana principal</h1>';
+			echo '<a href=http://localhost/PHP-Proyecto/login.php> Iniciar sesion </a><br>';
+			echo '<a href=http://localhost/PHP-Proyecto/registro.php> Registrarse </a><br>';
             echo '<a href=http://localhost/admin.php> Administra los créditos </a><br>';
 			echo '<a href=http://localhost/finDeMes.php> Operaciones de Fin de Mes </a><br>';
 			echo '<a href=http://localhost/PHP-Proyecto/logout.php> Salir </a><br>';
