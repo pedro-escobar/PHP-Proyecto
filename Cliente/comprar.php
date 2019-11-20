@@ -45,11 +45,15 @@
                                     }
                                     else{
                                         $fila = mysqli_fetch_array($resultado);
-                                        if($_POST["monto"]>($fila['cupoMax'])+$fila['sobreCupo']){
+                                        $monto = $_POST["monto"];
+                                        if($_POST["moneda"]=='pesos'){
+                                            $monto/=1000;
+                                        }
+                                        if($monto>($fila['cupoMax'])+$fila['sobreCupo']){
                                             $message = 'El monto excede el cupo maximo de la tarjeta junto al sobrecupo';
                                         }
                                         else{                                            
-                                            $sql = 'INSERT INTO Compras (idTarjeta, valorCompra, Cuotas) VALUES ('.$_POST["tarjeta"].', '.$_POST["monto"].', '.$_POST["cuotas"].')';
+                                            $sql = 'INSERT INTO Compras (idTarjeta, valorCompra, Cuotas) VALUES ('.$_POST["tarjeta"].', '.$monto.', '.$_POST["cuotas"].')';
                                             if(mysqli_query($con,$sql)){ 
                                                 $message = "compra realizada: ".$resta;
                                             } else{ 

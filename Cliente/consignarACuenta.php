@@ -42,18 +42,14 @@
                                     }
                                     else{
                                         $fila = mysqli_fetch_array($resultado);
-                                        if($_POST["monto"]>$fila['javeCoins']){
-                                            $message = 'El monto excede el saldo de la cuenta';
-                                        }
-                                        else{
-                                            $suma = $fila['javeCoins']+$_POST["monto"];
-                                            $sql = 'UPDATE CuentaDeAhorros set javeCoins='.$suma;
-                                            if(mysqli_query($con,$sql)){ 
-                                                $message = "saldo actualizado, nuevo monto: ".$suma;
-                                            } else{ 
-                                                $message = "Error actualizando monto ".mysqli_error($con); 
-                                            } 
-                                        }
+                                        $suma = $fila['javeCoins']+$_POST["monto"];
+                                        $sql = 'UPDATE CuentaDeAhorros set javeCoins='.$suma;
+                                        if(mysqli_query($con,$sql)){ 
+                                            $message = "saldo actualizado, nuevo monto: ".$suma;
+                                        } else{ 
+                                            $message = "Error actualizando monto ".mysqli_error($con); 
+                                        } 
+                                        
                                     }
                                 }
                             }

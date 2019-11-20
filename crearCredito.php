@@ -30,6 +30,10 @@
                                     $javecoine = "Formato de monto incorrecto, ingrese solo números mayores a cero";
                                     $flag = false;    
                                 }
+                                if(empty($_POST["fechapago"])){
+                                    $fechapagoe = "La fecha es requerida";
+                                    $flag = false;
+                                }
                                 if($flag){
                                     $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);                         
                                     if (mysqli_connect_errno()) { 
@@ -144,7 +148,7 @@
                     $str_pagina.='</form>';
                     echo $str_pagina;
                     echo $message;
-                    echo '<a href=http://localhost/PHP-Proyecto/Cliente/index.php> Volver </a><br>'; 
+                    echo '<a href=http://localhost/PHP-Proyecto/index.php> Volver </a><br>'; 
                 }                    					
             }
 		?>		
