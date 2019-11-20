@@ -10,7 +10,7 @@
         echo 'Hubo un error '. mysqli_error($con). ' <br>';
     }
     $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
-    $sql = 'create table TarjetasCredito (id Int Not Null Auto_Increment, idCliente Int Not Null, cupoMax Int, tasaInteres decimal(10,3), cuotaManejo decimal(10,3), aprobada bit, primary key (id), foreign key (idCliente) references Usuarios(id));';
+    $sql = 'create table TarjetasCredito (id Int Not Null Auto_Increment, idCliente Int Not Null, cupoMax Int, tasaInteres decimal(10,3), cuotaManejo decimal(10,3), aprobada bit Null, primary key (id), foreign key (idCliente) references Usuarios(id));';
     if(mysqli_query($con, $sql)){
         echo 'La tabla de tarjetas de credito se ha creado correctamente <br>';
     }
