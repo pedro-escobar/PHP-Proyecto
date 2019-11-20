@@ -31,7 +31,7 @@
                     $val = $_POST["contrasena"];
                 }
                 $cadena .= $val.'\'><br>
-                <input type="submit" value="Iniciar sesion" name = sesion>
+                <input type="submit" value="Iniciar sesion" name = "sesion">
                 <br>
                 <a href="http://localhost/PHP-Proyecto/registro.php">Registrarme</a>
             </form>';
@@ -55,14 +55,14 @@
                                 $_SESSION['id'] = null;
                                 $_SESSION['nomusuario'] = null;
                                 $_SESSION['rol'] = $rol;
-                                header("Location: /PHP-Proyecto/Admin/index.php");
+                                header("Location: http://localhost/PHP-Proyecto/Admin/index.php");
                             }
                             if ($rol == 'cliente'){
                                 //echo "usuario";
                                 $_SESSION['id'] = $row['id'];
                                 $_SESSION['nomusuario'] = $row['username'];
                                 $_SESSION['rol'] = $rol;
-                                header("Location: /PHP-Proyecto/Cliente/index.php");
+                                header("Location: http://localhost/PHP-Proyecto/Cliente/index.php");
                             }
                         }
                         else {
