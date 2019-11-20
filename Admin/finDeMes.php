@@ -21,7 +21,7 @@ session_start();
         $fechaActual = date('y-m-d');
         if ($dayActual == DIA_CORTE) {
             echo "-------Cobro de creditos <br>";
-            $sql = "SELECT * FROM creditos";
+            $sql = "SELECT * FROM creditos WHERE aprobado = 1";
             $resultadoCreditos = mysqli_query($con, $sql);
             while ($filaCredito = mysqli_fetch_array($resultadoCreditos)) {
                 $timePago = strtotime($filaCredito['fechaPago']) * 1000;
@@ -43,7 +43,7 @@ session_start();
                             echo 'OK <br>';
                         } elseif (($timePago <= $timePagado) && ($timePagado < $timeAcutal)) {
                             echo 'OK con mora <br>';
-                            $dias = (int) date("d", (int) $timePagado/1000 - (int) $timePago/1000);
+                            $dias = (int) date("d", (int) $timePagado / 1000 - (int) $timePago / 1000);
 
                             $intereses = (float) $filaCredito['tasaInteres'];
                             echo "Días mora : $dias <br>";
@@ -52,7 +52,6 @@ session_start();
 
                             $sql = "UPDATE creditos SET mora = $mora WHERE id = $idCredito";
                             mysqli_query($con, $sql);
-
                         }
                     } elseif ($timePago < $timeAcutal) {
                         echo 'moroso <br>';
@@ -63,7 +62,7 @@ session_start();
                         $sql = "UPDATE creditos SET mora = $mora WHERE id = $idCredito";
                         mysqli_query($con, $sql);
                         //enviarCorreo
-                    } 
+                    }
                 } elseif (is_null($filaCredito['pagado']) && ($timePago <= $timeAcutal)) {
                     echo '--cliente<br>';
                     $idCliente = $filaCredito['idCliente'];
@@ -77,7 +76,7 @@ session_start();
 
                     while ($filaCuenta = mysqli_fetch_array($resultadoCuentasAhorro)) {
                         $dineroCuenta = (float) $filaCuenta['javeCoins'];
-                        echo 'cuenta: ' . $dineroCuenta . '<br>';
+                        echo 'dinero cuenta: ' . $dineroCuenta . '<br>';
                         if ($dineroCuenta >= $deuda) {
                             $cuentasAfectas[$filaCuenta['id']] = $dineroCuenta - $deuda;
                             $deuda = 0.0;
@@ -104,6 +103,95 @@ session_start();
                     }
                 }
             }
+            //Cobrar tarjetas
+            echo "-------Pago tarjetas<br>";
+            $sql = "SELECT * FROM compras WHERE pagado IS NULL";
+            $resultadoCompras = mysqli_query($con, $sql);
+            while ($filaCompra = mysqli_fetch_array($resultadoCompras)) {
+                $idCompra = $filaCompra['id'];
+                $idTarjeta = $filaCompra['idTarjeta'];
+                echo "--Compra $idCompra<br>";
+                $mesCompra = date("m", strtotime($filaCompra['fechaCompra']));
+                $sql = "SELECT * FROM tarjetascredito LIMIT 1";
+                $result = mysqli_query($con, $sql);
+                $tarjeta = mysqli_fetch_assoc($result);
+                $idCliente = $tarjeta['idCliente'];
+                $cobroInteres = $tarjeta['tasaInteres'];
+                echo "Cliente : $idCliente <br>";
+
+                if ($mesCompra == $monthActual) {
+                    echo 'No se cobran intereses <br>';
+                    $deuda = (float) $filaCompra['valorCompra'] / (float) $filaCompra['Cuotas'];
+                    $sql = "SELECT * FROM cuentadeahorros WHERE idCliente = $idCliente  ORDER BY javeCoins DESC";
+                    $resultadoCuentasAhorro = mysqli_query($con, $sql);
+
+                    while ($filaCuenta = mysqli_fetch_array($resultadoCuentasAhorro)) {
+                        $dineroCuenta = (float) $filaCuenta['javeCoins'];
+                        echo 'dinero cuenta: ' . $dineroCuenta . '<br>';
+                        if ($dineroCuenta >= $deuda) {
+                            $cuentasAfectas[$filaCuenta['id']] = $dineroCuenta - $deuda;
+                            $deuda = 0.0;
+                        } elseif ($dineroCuenta < $deuda) {
+                            $deuda = $deuda - $dineroCuenta;
+                            $cuentasAfectas[$filaCuenta['id']] = 0.0;
+                        }
+                        if ($deuda == 0) {
+                            break;
+                        }
+                    }
+                    if ($deuda == 0.0) {
+                        echo 'Se pudo pagar la compra<br>';
+                        foreach ($cuentasAfectas as $key => $value) {
+                            $sql = "UPDATE cuentadeahorros SET javeCoins = $value WHERE id = $key";
+                            mysqli_query($con, $sql);
+                        }
+                    } else {
+                        echo 'falta money<br>';
+                        //enviar correo
+                    }
+                } else {
+                    echo 'Cobro de intereses <br>';
+                    $cuotas = (float) $filaCompra['Cuotas'];
+                    $deuda = (float) $filaCompra['valorCompra'] / $cuotas;
+                    $deuda = $deuda + ($deuda*$cobroInteres);
+                    $sql = "SELECT * FROM cuentadeahorros WHERE idCliente = $idCliente  ORDER BY javeCoins DESC";
+                    $resultadoCuentasAhorro = mysqli_query($con, $sql);
+
+                    while ($filaCuenta = mysqli_fetch_array($resultadoCuentasAhorro)) {
+                        $dineroCuenta = (float) $filaCuenta['javeCoins'];
+                        echo 'dinero cuenta: ' . $dineroCuenta . '<br>';
+                        if ($dineroCuenta >= $deuda) {
+                            $cuentasAfectas[$filaCuenta['id']] = $dineroCuenta - $deuda;
+                            $deuda = 0.0;
+                        } elseif ($dineroCuenta < $deuda) {
+                            $deuda = $deuda - $dineroCuenta;
+                            $cuentasAfectas[$filaCuenta['id']] = 0.0;
+                        }
+                        if ($deuda == 0) {
+                            break;
+                        }
+                    }
+                    if ($deuda == 0.0) {
+                        echo 'Se pudo pagar el manejo<br>';
+                        foreach ($cuentasAfectas as $key => $value) {
+                            $mesUltimo = $monthActual - $mesCompra; 
+                            if($mesUltimo==$cuotas){
+                                echo 'Ultimo mes<br>';
+                                $sql = "UPDATE cuentadeahorros SET javeCoins = $value WHERE id = $key";
+                                mysqli_query($con, $sql);
+                                $sql = "UPDATE compras SET pagado = 1 WHERE id = $idCompra";
+                                mysqli_query($con, $sql);
+                            }else{
+                                $sql = "UPDATE cuentadeahorros SET javeCoins = $value WHERE id = $key";
+                            }
+                            
+                        }
+                    } else {
+                        echo 'falta money<br>';
+                        //enviar correo
+                    }
+                 }
+            }
             //Aumentar saldos
             echo "-------Aumento de saldos<br>";
             $sql = "SELECT * FROM cuentadeahorros";
@@ -112,7 +200,7 @@ session_start();
                 $idCuenta = $filaCuenta['id'];
                 echo "--Cuenta $idCuenta <br>";
                 $dineroCuenta = (float) $filaCuenta['javeCoins'];
-                $nuevoDinero = $dineroCuenta + ($dineroCuenta * INTERES_GLOBAL);      
+                $nuevoDinero = $dineroCuenta + ($dineroCuenta * INTERES_GLOBAL);
                 $sql = "UPDATE cuentadeahorros SET javeCoins = $nuevoDinero WHERE id = $idCuenta";
                 mysqli_query($con, $sql);
                 echo "Nuevo monto: $nuevoDinero<br>";
@@ -121,7 +209,7 @@ session_start();
             echo "-------Cobro manejo de tarjetas<br>";
             $sql = "SELECT * FROM tarjetascredito";
             $resultadoCreditos = mysqli_query($con, $sql);
-            while ($filaCredito = mysqli_fetch_array($resultadoCreditos)){          
+            while ($filaCredito = mysqli_fetch_array($resultadoCreditos)) {
                 $idCliente = $filaCredito['idCliente'];
                 $idTarjeta = $filaCredito['id'];
                 echo "--Tarjeta $idTarjeta <br>";
@@ -130,7 +218,7 @@ session_start();
                 $deuda = (float) $filaCredito['cuotaManejo'];
                 while ($filaCuenta = mysqli_fetch_array($resultadoCuentasAhorro)) {
                     $dineroCuenta = (float) $filaCuenta['javeCoins'];
-                    echo 'cuenta: ' . $dineroCuenta . '<br>';
+                    echo 'dinero cuenta: ' . $dineroCuenta . '<br>';
                     if ($dineroCuenta >= $deuda) {
                         $cuentasAfectas[$filaCuenta['id']] = $dineroCuenta - $deuda;
                         $deuda = 0.0;
@@ -153,7 +241,6 @@ session_start();
                     //enviar correo
                 }
             }
-
         } else {
             echo "Aún no es día de corte ";
         }
