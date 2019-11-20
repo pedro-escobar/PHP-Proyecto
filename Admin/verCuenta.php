@@ -15,19 +15,15 @@
         }else{
             if (isset($_GET['id']) && isset($_SESSION['rol'])) {
                 if ($_SESSION['rol'] == 'admin'){
-                    $sql = "SELECT * FROM usuarios WHERE id=".$_GET['id'];
+                    $sql = "SELECT * FROM cuentadeahorros WHERE id=".$_GET['id'];
                     $resultado = mysqli_query($con,$sql);
                     if(mysqli_num_rows($resultado) > 0){
                         $row = mysqli_fetch_assoc($resultado);
                         $cadena = "";
                         $cadena .= '<form action="" method="post">
                             Id: <input type="numeric" disabled name="id" value="'.$row['id'].'"><br>
-                            Nombre usuario: <input type="text" disabled name="username" value="'.$row['username'].'"><br>
-                            Rol: 
-                            <select name="rol" size="" required>
-                                <option value="cliente">Cliente</option>
-                                <option value="admin">Administrador</option>
-                            </select><br>
+                            Id Cliente: <input type="numeric" disabled name="idcliente" value="'.$row['idCliente'].'"><br>
+                            JaveCoins: <input type="numeric" name="javecoins" value="'.$row['javeCoins'].'"><br>
                             <input type="submit" value="Guardar" name = guardar>
                             <input type="submit" value="Borrar" name = borrar><br>
                             </form>';
@@ -35,30 +31,28 @@
                         echo '<a href=http://localhost/PHP-Proyecto/Admin/administrarUsuarios.php> Volver </a><br>';
                         echo '<a href=http://localhost/PHP-Proyecto/logout.php> Logout </a><br>';
                         if (isset($_POST['guardar'])){
-                            if (isset($_POST['rol'])){
-                                $sql = 'UPDATE usuarios'." SET rol= '".$_POST['rol']."' WHERE id= ".$row['id'];
+                            if (isset($_POST['javecoins'])){
+                                $sql = 'UPDATE cuentadeahorros'." SET javeCoins= ".$_POST['javecoins']." WHERE id= ".$row['id'];
                                 if (mysqli_query($con, $sql)) {
-                                    echo "Usuario actualizado correctamente";
-                                    header("Location: http://localhost/PHP-Proyecto/Admin/administrarUsuarios.php");
+                                    header("Location: http://localhost/PHP-Proyecto/Admin/administrarCuentas.php");
                                 } else {
-                                    echo "Error actualizando persona: " . mysqli_error($con);
+                                    echo "Error actualizando cuenta: " . mysqli_error($con);
                                 }
                             }
                         }
                         if (isset($_POST['borrar'])){
-                            if (isset($_POST['rol'])){
-                                $sql = 'DELETE FROM usuarios'." WHERE id=".$row['id'];
+                            if (isset($_POST['javecoins'])){
+                                $sql = 'DELETE FROM cuentadeahorros'." WHERE id=".$row['id'];
                                 if (mysqli_query($con, $sql)) {
-                                    echo "Usuario eliminado correctamente";
-                                    header("Location: http://localhost/PHP-Proyecto/Admin/administrarUsuarios.php");
+                                    header("Location: http://localhost/PHP-Proyecto/Admin/administrarCuentas.php");
                                 } else {
-                                    echo "Error eliminando usuario: " . mysqli_error($con);
+                                    echo "Error eliminando cuenta: " . mysqli_error($con);
                                 } 
                             } 
                         }
                     }
                     else {
-                        echo "El usuario con ese id no existe";
+                        echo "La cuenta con ese id no existe";
                     }
                 }
                 else {

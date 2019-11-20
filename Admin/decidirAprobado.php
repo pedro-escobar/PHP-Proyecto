@@ -19,7 +19,7 @@
                     $sql = "SELECT * FROM tarjetascredito WHERE id=".$_GET['id'];
                     $resultado = mysqli_query($con,$sql);
                     if(mysqli_num_rows($resultado) > 0){
-                        echo "<h1> Credito </h1>";
+                        echo "<h1> Tarjeta de credito </h1>";
                         $row = mysqli_fetch_assoc($resultado);
                         //echo "entro";
                         //echo $row['idCliente'];
@@ -38,7 +38,7 @@
                             <input type="submit" value="Guardar" name = guardar>
                             </form>';
                         echo $cadena;
-                        echo '<a href=http://localhost/PHP-Proyecto/Admin/adminCreditos.php> Volver </a><br>';
+                        echo '<a href=http://localhost/PHP-Proyecto/Admin/aprobarTarjetas.php> Volver </a><br>';
                         echo '<a href=http://localhost/PHP-Proyecto/logout.php> Logout </a><br>';
                         if (isset($_POST['guardar'])){
                             if (isset($_POST['cupomax']) && isset($_POST['tasainteres']) && isset($_POST['cuotamanejo']) && isset($_POST['aprobado'])){

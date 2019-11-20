@@ -9,7 +9,7 @@
 	</head>
 	<body>
         <?php		
-            include_once dirname(__FILE__) . '/../Utils/config.php';
+            include_once dirname(__FILE__) . '/Utils/config.php';
             $fechapagoe = $javecoine = $message = "";
 			echo '<h1>Menú de creación de créditos</h1>';
 			if (isset($_SESSION['rol'])) {

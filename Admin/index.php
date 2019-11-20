@@ -13,7 +13,10 @@
 				if ($_SESSION['rol'] == 'admin'){
 					echo '<h1>Ventana principal administrador</h1>';
 					echo '<a href=http://localhost/PHP-Proyecto/Admin/administrarUsuarios.php> Administrar usuarios </a><br>';
+					echo '<a href=http://localhost/PHP-Proyecto/Admin/administrarCuentas.php> Administrar cuentas de ahorro </a><br>';
+					echo '<a href=http://localhost/PHP-Proyecto/Admin/administrarCreditos.php> Administrar Creditos </a><br>';
 					echo '<a href=http://localhost/PHP-Proyecto/Admin/aprobarTarjetas.php> Aprobar trajetas </a><br>';
+					echo '<a href=http://localhost/PHP-Proyecto/Admin/aprobarCreditos.php> Aprobar creditos </a><br>';
 					echo '<a href=http://localhost/PHP-Proyecto/Admin/finDeMes.php> Operaciones de Fin de Mes </a><br>';
 					echo '<a href=http://localhost/PHP-Proyecto/logout.php> Salir </a><br>';
 				}
