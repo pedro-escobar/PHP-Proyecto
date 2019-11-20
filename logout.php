@@ -9,5 +9,5 @@
         );
     }
     session_destroy();
-    header("Location: http://localhost/index.php"); 
+    header("Location: http://localhost/PHP-Proyecto/index.php"); 
 ?>

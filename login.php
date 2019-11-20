@@ -1,11 +1,13 @@
-<!DOCRYPE HTML>
+<?php
+    session_start();
+?>
+<!DOCtYPE HTML>
 <HEAD>
     <title>Login</title>
 </HEAD>
 <BODY>
     <?php
         echo "<h1> Login </h1>";
-        session_start();
         $_SESSION['id'] = null;
         $_SESSION['nomusuario'] = null;
         $_SESSION['rol'] = null;

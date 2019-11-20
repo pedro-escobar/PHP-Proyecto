@@ -1,4 +1,4 @@
-<!DOCRYPE HTML>
+<!DOCTYPE HTML>
 <HEAD>
     <title>Registro</title>
 </HEAD>
