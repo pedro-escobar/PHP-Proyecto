@@ -28,7 +28,7 @@
         echo 'Hubo un error '. mysqli_error($con). ' <br>';
     }
     $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
-    $sql = 'CREATE table Creditos (id Int Not Null Auto_Increment, idCliente Int Null, javeCoins decimal(10,2), fechaPago date, correoVisitante varchar(50), tasaInteres decimal(10,3), tasaInteresMora decimal(10,3), aprobado bit, primary key (id), foreign key (idCliente) references Usuarios(id));';    
+    $sql = 'CREATE table Creditos (id Int Not Null Auto_Increment, idCliente Int Null, javeCoins decimal(10,2), fechaPago date, correoVisitante varchar(50), tasaInteres decimal(10,3) , mora decimal(10,3) DEFAULT 0, pagado bit, fechaPagado date, aprobado bit, primary key (id), foreign key (idCliente) references Usuarios(id));';    
     if(mysqli_query($con, $sql)){
         echo 'La tabla de créditos se ha creado correctamente <br>';
     }
@@ -44,5 +44,5 @@
         echo 'Hubo un error '. mysqli_error($con). ' <br>';
     }
 
-
+    
 ?>

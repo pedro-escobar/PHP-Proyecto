@@ -9,7 +9,7 @@
         </head>
         <body>        
             <?php       
-                include_once dirname(__FILE__) . '/../Utils/config.php';      
+                include_once dirname(__FILE__) . '/Utils/config.php';      
                 if (isset($_SESSION['rol'])) {
                     if ($_SESSION['rol'] == 'cliente'){
                         $flag = true;

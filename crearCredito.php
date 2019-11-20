@@ -40,12 +40,14 @@
                                         $str_pagina.= "Error en la conexión: " . mysqli_connect_error(); 
                                     } 
                                     else{
-                                        $tasa = 5;
-                                        if(empty($_POST['tasainteres'])){
+                                        $tasa = 0.05;
+                                        if(!empty($_POST['tasainteres'])){
                                             $tasa = $_POST['tasainteres'];
                                         }
                                         $date=date("Y-m-d",strtotime($_POST['fechapago']));
-                                        $sql = 'INSERT INTO Creditos (idCliente, fechaPago, javeCoins, tasaInteres) VALUES ('.$_SESSION['id'].','.$date.', '.$_POST['javecoins'].', '.$tasa.')';                                                                               
+                                        $idCliente = $_SESSION['id'];
+                                        $javeCoins = $_POST['javecoins'];
+                                        $sql = "INSERT INTO Creditos (idCliente, fechaPago, javeCoins, tasaInteres) VALUES ('$idCliente','$date', '$javeCoins', '$tasa')";                                                                                  
                                         if(mysqli_query($con,$sql)){ 
                                             $message = "Credito agregado"; 
                                             $_POST['fechaPago'] = $_POST['javecoins'] ="";                               
@@ -112,9 +114,11 @@
                                     $str_pagina.= "Error en la conexión: " . mysqli_connect_error(); 
                                 } 
                                 else{
-                                    $tasa = 5;
+                                    $tasa = 0.05;
                                     $date=date("Y-m-d",strtotime($_POST['fechapago']));
-                                    $sql = 'INSERT INTO Creditos (correoVisitante, fechaPago, javeCoins, tasaInteres) VALUES ("'.$_POST['correo'].'",'.$date.', '.$_POST['javecoins'].', '.$tasa.')';                                                                               
+                                    $correo = $_POST['correo'];
+                                    $javeCoins = $_POST['javecoins'];
+                                    $sql = "INSERT INTO Creditos (correoVisitante, fechaPago, javeCoins, tasaInteres) VALUES ('$correo','$date', '$javeCoins', '$tasa')";                                                                               
                                     if(mysqli_query($con,$sql)){ 
                                         $message = "Credito agregado"; 
                                         $_POST['fechaPago'] = $_POST['javecoins'] ="";                               
