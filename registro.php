@@ -31,7 +31,7 @@
                         if(mysqli_num_rows($resultado) > 0){
                             $hash = password_hash($_POST['contrasena'], PASSWORD_DEFAULT);
                             //echo $hash;
-                            $sql = 'INSERT INTO '."usuarios"." (username ,password, rol) VALUES ('".$_POST['nombre']."','".$hash."','cliente')";
+                            $sql = 'INSERT INTO '."usuarios"." (username ,password, rol) VALUES ('".$_POST['nombre']."','".$hash."','"."cliente"."')";
                             //echo $sql;
                             if(mysqli_query($con,$sql)){
                                 echo "Cliente creado correctamente";

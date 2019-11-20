@@ -9,7 +9,6 @@
 	</head>
 	<body>
 		<?php		
-			echo '<h1>Ventana principal administrador</h1>';
 			if (isset($_SESSION['rol'])) {
 				if ($_SESSION['rol'] == 'admin'){
 					echo '<h1>Ventana principal administrador</h1>';
