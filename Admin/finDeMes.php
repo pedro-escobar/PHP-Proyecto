@@ -3,7 +3,7 @@
 ?>
 <!DOCTYPE HTML>
 <HEAD>
-    <title>Listado</title>
+    <title>Fin de mes</title>
 </HEAD>
 <BODY>
     <?php
@@ -27,7 +27,7 @@
                         echo 'cliente<br>';
                         $idCliente = $filaCredito['idCliente'];
                         $idCredito = $filaCredito['id'];
-                        $sql = "SELECT * FROM cuentadeahorros WHERE idCliente = $idCliente ORDER BY javeCoins";
+                        $sql = "SELECT * FROM cuentadeahorros WHERE idCliente = $idCliente ORDER BY javeCoins DESC";
                         $resultadoCuentasAhorro = mysqli_query($con,$sql);
                         $deuda = (float) $filaCredito['javeCoins'];
                         echo 'deuda: '. $deuda . '<br>';
