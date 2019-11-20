@@ -7,7 +7,6 @@
 </HEAD>
 <BODY>
     <?php
-        session_start();
         include_once dirname(__FILE__) . '/../Utils/config.php'; 
         $con=mysqli_connect(HOST_DB,USUARIO_DB,USUARIO_PASS,NOMBRE_DB);
         // Verificar conexión
