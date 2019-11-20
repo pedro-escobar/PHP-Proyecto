@@ -58,11 +58,12 @@
                                 header("Location: /PHP-Proyecto/Admin/index.php");
                             }
                             if ($rol == 'cliente'){
-                                //echo "usuario";
+                                echo "usuario";
                                 $_SESSION['id'] = $row['id'];
                                 $_SESSION['nomusuario'] = $row['username'];
                                 $_SESSION['rol'] = $rol;
                                 header("Location: /PHP-Proyecto/Cliente/index.php");
+
                             }
                         }
                         else {
