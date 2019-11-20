@@ -9,6 +9,19 @@ session_start();
 
 <BODY>
     <?php
+
+    function enviarCorreo($correo, $mensaje, $subject)
+    {
+        require_once(dirname(__FILE__) . '/PHPMailer/config.php');
+        $mail->ClearAllRecipients();
+        $mail->Subject = $subject;
+        $mail->AddAddress($correo);
+        $msg = $mensaje;
+
+        $mail->Body    = $msg;
+        $mail->Send();
+    }
+
     include_once dirname(__FILE__) . '/../Utils/config.php';
     $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
     // Verificar conexión
@@ -29,6 +42,7 @@ session_start();
                 if (is_null($filaCredito['idCliente'])) {
                     echo '--visitante<br>';
                     $idCredito = $filaCredito['id'];
+                    $correoUsuario = $filaCredito['correoVisitante'];
                     $deuda = (float) $filaCredito['javeCoins'];
                     $mora = (float) $filaCredito['mora'];
                     $totalPagar = $mora + $deuda;
@@ -61,7 +75,7 @@ session_start();
 
                         $sql = "UPDATE creditos SET mora = $mora WHERE id = $idCredito";
                         mysqli_query($con, $sql);
-                        //enviarCorreo
+                        enviarCorreo($correoUsuario, "Recordatorio de impago del credito: $idCredito", "Impago de credito");
                     }
                 } elseif (is_null($filaCredito['pagado']) && ($timePago <= $timeAcutal)) {
                     echo '--cliente<br>';
@@ -99,7 +113,7 @@ session_start();
                         $sql = "UPDATE creditos SET pagado = 1, fechaPagado = '$date' WHERE id = $idCredito";
                         mysqli_query($con, $sql);
                     } else {
-                        echo 'falta money<br>';
+                        echo 'falta dinero<br>';
                     }
                 }
             }
@@ -146,8 +160,8 @@ session_start();
                             mysqli_query($con, $sql);
                         }
                     } else {
-                        echo 'falta money<br>';
-                        //enviar correo
+                        echo 'falta dinero<br>';
+                        enviarCorreo($correoUsuario, "No se ha podido pagar una cuota de una compra por fondos insuficientes, Id: $idCompra", "Impago cuota de compra");
                     }
                 } else {
                     echo 'Cobro de intereses <br>';
@@ -188,7 +202,7 @@ session_start();
                         }
                     } else {
                         echo 'falta money<br>';
-                        //enviar correo
+                        enviarCorreo($correoUsuario, "No se ha podido pagar una cuota de una compra por fondos insuficientes, Id: $idCompra", "Impago cuota de compra");
                     }
                  }
             }
@@ -238,7 +252,7 @@ session_start();
                     }
                 } else {
                     echo 'falta money<br>';
-                    //enviar correo
+                    enviarCorreo($correoUsuario, "No se ha podido pagar el manejo de una tarjeta por fondos insuficientes, Id tarjeta: $idTarjeta", "Impago cuota de manejo");
                 }
             }
         } else {
