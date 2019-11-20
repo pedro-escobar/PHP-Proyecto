@@ -22,7 +22,7 @@
                                 $str_pagina.= "Error en la conexión: " . mysqli_connect_error(); 
                             } 
                             else{
-                                $sql = 'INSERT INTO TarjetasCredito (idCliente, aprobada) VALUES ('.$_SESSION['id'].', 0)';                                                                               
+                                $sql = 'INSERT INTO TarjetasCredito (idCliente) VALUES ('.$_SESSION['id'].')';                                                                               
                                 if(mysqli_query($con,$sql)){ 
                                     $message = "Tarjeta agregada";                                
                                 } else{ 
