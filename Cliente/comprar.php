@@ -45,16 +45,15 @@
                                     }
                                     else{
                                         $fila = mysqli_fetch_array($resultado);
-                                        if($_POST["monto"]>$fila['javeCoins']){
-                                            $message = 'El monto excede el cupo de la tarjeta';
+                                        if($_POST["monto"]>($fila['cupoMax'])+$fila['sobreCupo']){
+                                            $message = 'El monto excede el cupo maximo de la tarjeta junto al sobrecupo';
                                         }
-                                        else{
-                                            $resta = $fila['javeCoins']-$_POST["monto"];
-                                            $sql = 'UPDATE CuentaDeAhorros set javeCoins='.$resta;
+                                        else{                                            
+                                            $sql = 'INSERT INTO Compras (idTarjeta, valorCompra, Cuotas) VALUES ('.$_POST["tarjeta"].', '.$_POST["monto"].', '.$_POST["cuotas"].')';
                                             if(mysqli_query($con,$sql)){ 
-                                                $message = "saldo actualizado, nuevo monto: ".$resta;
+                                                $message = "compra realizada: ".$resta;
                                             } else{ 
-                                                $message = "Error actualizando monto ".mysqli_error($con); 
+                                                $message = "Error realizando compra ".mysqli_error($con); 
                                             } 
                                         }
                                     }
@@ -91,7 +90,7 @@
                         $str_pagina.= '<br>';
                         $str_pagina.= 'Cuotas:';     
                                                        
-                        $str_pagina.= '<select> ';
+                        $str_pagina.= '<select name="cuotas"> ';
                         for ($i = 1; $i <= 6; $i++) {                         
                             $str_pagina.= '<option value="'.$i.'"> '.$i.' Meses </option>';
                         }
@@ -115,7 +114,8 @@
                         $str_pagina.= '<input type="submit" value="Comprar" name="submit" />';                      
                         $str_pagina.= '</form>';
                         $str_pagina.= '<br>';  
-                        echo $str_pagina;                                     
+                        echo $str_pagina;
+                        echo '<a href=http://localhost/PHP-Proyecto/Cliente/index.php> Volver </a><br>';                                     
                     }
                     else if ($_SESSION['rol'] == 'admin'){
                         header("HTTP/1.1 401 Unauthorized");
