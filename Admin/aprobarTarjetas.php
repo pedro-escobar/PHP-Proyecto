@@ -18,12 +18,12 @@
                 if ($_SESSION['rol'] == 'admin'){
                     $sql = "SELECT * FROM tarjetascredito WHERE aprobada IS NULL";
                     $resultado = mysqli_query($con,$sql);
-                    echo "<h1> Creditos con aprobacion pendiente </h1> <br>";
+                    echo "<h1> Creditos con aprobacion pendiente </h1>";
                     if(mysqli_num_rows($resultado) > 0){
                         $cadena ="";
                         $cadena .='<ul>';
                         while($fila = mysqli_fetch_array($resultado)) {
-                            $cadena .='<li><a href="http://localhost/PHP-Proyecto/Admin/decidirAprobado.php/?id='.$fila['id'].'">'.$fila['id'].'</a>'.'Pendiente aprobación'.'</li>';
+                            $cadena .='<li><a href="http://localhost/PHP-Proyecto/Admin/decidirAprobado.php/?id='.$fila['id'].'">'. "Tarjeta de credito con id ".$fila['id'].'</a>'.'Pendiente aprobación'.'</li>';
                         }
                         $cadena .='</ul>';
                         echo $cadena;

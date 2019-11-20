@@ -12,7 +12,8 @@
 			if (isset($_SESSION['rol'])) {
 				if ($_SESSION['rol'] == 'admin'){
 					echo '<h1>Ventana principal administrador</h1>';
-					echo '<a href=http://localhost/PHP-Proyecto/Admin/adminCreditos.php> Administra los créditos </a><br>';
+					echo '<a href=http://localhost/PHP-Proyecto/Admin/administrarUsuarios.php> Administrar usuarios </a><br>';
+					echo '<a href=http://localhost/PHP-Proyecto/Admin/aprobarTarjetas.php> Aprobar trajetas </a><br>';
 					echo '<a href=http://localhost/PHP-Proyecto/Admin/finDeMes.php> Operaciones de Fin de Mes </a><br>';
 					echo '<a href=http://localhost/PHP-Proyecto/logout.php> Salir </a><br>';
 				}

@@ -12,7 +12,7 @@
         echo 'Hubo un error '. mysqli_error($con). ' <br>';
     }
     $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
-    $sql = 'create table TarjetasCredito (id Int Not Null Auto_Increment, idCliente Int Not Null, cupoMax decimal(10,3), sobreCupo decimal(10,3), tasaInteres decimal(10,3), cuotaManejo decimal(10,3), aprobada bit Null, primary key (id), foreign key (idCliente) references Usuarios(id) on delete cascade);';
+    $sql = 'CREATE table TarjetasCredito (id Int Not Null Auto_Increment, idCliente Int Not Null, cupoMax decimal(10,3), sobreCupo decimal(10,3), tasaInteres decimal(10,3), cuotaManejo decimal(10,3), aprobada bit Null, primary key (id), foreign key (idCliente) references Usuarios(id) on delete cascade);';
     if(mysqli_query($con, $sql)){
         echo 'La tabla de tarjetas de credito se ha creado correctamente <br>';
     }
@@ -20,7 +20,7 @@
         echo 'Hubo un error '. mysqli_error($con). ' <br>';
     }
     $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
-    $sql = 'create table CuentaDeAhorros (id Int Not Null Auto_Increment, idCliente Int Not Null, javeCoins decimal(10,2), primary key (id), foreign key (idCliente) references Usuarios(id) on delete cascade);';
+    $sql = 'CREATE table CuentaDeAhorros (id Int Not Null Auto_Increment, idCliente Int Not Null, javeCoins decimal(10,2), primary key (id), foreign key (idCliente) references Usuarios(id) on delete cascade);';
     if(mysqli_query($con, $sql)){
         echo 'La tabla de cuentas de ahorros se ha creado correctamente <br>';
     }
@@ -28,8 +28,7 @@
         echo 'Hubo un error '. mysqli_error($con). ' <br>';
     }
     $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
-    $sql = 'CREATE table Creditos (id Int Not Null Auto_Increment, idCliente Int Null, javeCoins decimal(10,2), fechaPago date, correoVisitante varchar(50), tasaInteres decimal(10,3), aprobado bit, primary key (id), foreign key (idCliente) references Usuarios(id));';
-
+    $sql = 'CREATE table Creditos (id Int Not Null Auto_Increment, idCliente Int Null, javeCoins decimal(10,2), fechaPago date, correoVisitante varchar(50), tasaInteres decimal(10,3), aprobado bit, primary key (id), foreign key (idCliente) references Usuarios(id));';    
     if(mysqli_query($con, $sql)){
         echo 'La tabla de créditos se ha creado correctamente <br>';
     }
@@ -37,7 +36,7 @@
         echo 'Hubo un error '. mysqli_error($con). ' <br>';
     }
     $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
-    $sql = 'create table Compras (id Int Not Null Auto_Increment, idTarjeta Int, valorCompra decimal(10,2), Cuotas int, pagado bit, fechaCompra date, primary key (id), foreign key (idTarjeta) references TarjetasCredito(id) on delete cascade);';
+    $sql = 'CREATE table Compras (id Int Not Null Auto_Increment, idTarjeta Int, valorCompra decimal(10,2), Cuotas int, pagado bit, fechaCompra date, primary key (id), foreign key (idTarjeta) references TarjetasCredito(id) on delete cascade);';
     if(mysqli_query($con, $sql)){
         echo 'La tabla de compras se ha creado correctamente <br>';
     }
