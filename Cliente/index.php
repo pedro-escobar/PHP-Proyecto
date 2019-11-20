@@ -18,6 +18,7 @@
 					echo '<a href=http://localhost/PHP-Proyecto/Cliente/retiro.php> Retira tus JaveCoins </a><br>';
 					echo '<a href=http://localhost/PHP-Proyecto/Cliente/comprar.php> Realiza una compra </a><br>';
 					echo '<a href=http://localhost/PHP-Proyecto/Cliente/consignar.php> Consigna dinero a una cuenta </a><br>';
+					echo '<a href=http://localhost/PHP-Proyecto/logout.php> Salir </a><br>';
 				}
 				else{
 					echo "Usted no tiene permiso para acceder a esta pagina";
