@@ -13,7 +13,7 @@
                 if (isset($_SESSION['rol'])) {
                     if ($_SESSION['rol'] == 'cliente'){
                         $flag = true;
-                        $tarjee = $monedae = $montoe = "";  
+                        $tarjee = $monedae = $montoe = $message  = "";  
                         $options = array('options' => array('min_range' => 0));
                         if(isset($_POST['submit'])){                
                             if(empty($_POST["monto"])){
@@ -81,10 +81,10 @@
                                 $str_pagina.= '--No tienes tarjetas--';
                             }
                             else{
-                                $str_pagina.= '<select> name="tarjeta"';
+                                $str_pagina.= '<select name="tarjeta">';
                                 while($fila = mysqli_fetch_array($resultado)) {
                                     if($fila['aprobada']){
-                                        $str_pagina.= '<option value="'.$fila['Id'].'> Tarjeta Id '.$fila['Id'].'</option>';
+                                        $str_pagina.= '<option value="'.$fila['id'].'"> No '.$fila['id'].'</option>';
                                     }                                                             
                                 }
                                 $str_pagina.='</select>';                                
@@ -110,7 +110,7 @@
                         $str_pagina.= '<br>';
                         $str_pagina.= '<span> '. $monedae .'</span>';
                         $str_pagina.= '<br>';
-                        $str_pagina.= 'Cantidad a pagar: <input type="num" name="monto" value= " ';
+                        $str_pagina.= 'Cantidad a pagar: <input type="num" name="monto" value= "';
                         if(isset($_POST["monto"]))  $str_pagina.=$_POST["monto"];
                         $str_pagina.= '"/>';
                         $str_pagina.= '<span>'. $montoe. '</span>';
@@ -119,6 +119,7 @@
                         $str_pagina.= '</form>';
                         $str_pagina.= '<br>';  
                         echo $str_pagina;
+                        echo $message;
                         echo '<a href=http://localhost/PHP-Proyecto/Cliente/index.php> Volver </a><br>';                                     
                     }
                     else if ($_SESSION['rol'] == 'admin'){
