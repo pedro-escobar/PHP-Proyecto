@@ -52,8 +52,8 @@
                             echo $rol;
                             if ($rol == 'admin'){
                                 //echo "admin";
-                                $_SESSION['id'] = null;
-                                $_SESSION['nomusuario'] = null;
+                                $_SESSION['id'] = $row['id'];
+                                $_SESSION['nomusuario'] = $row['username'];
                                 $_SESSION['rol'] = $rol;
                                 header("Location: http://localhost/PHP-Proyecto/Admin/index.php");
                             }
