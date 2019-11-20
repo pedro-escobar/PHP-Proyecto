@@ -5,7 +5,7 @@
     <html>
         <head>
             <meta charset="UTF-8">
-            <title>Página de retiros</title>
+            <title>Página de consignar a cuenta</title>
         </head>
         <body>        
             <?php       
@@ -46,10 +46,10 @@
                                             $message = 'El monto excede el saldo de la cuenta';
                                         }
                                         else{
-                                            $resta = $fila['javeCoins']-$_POST["monto"];
-                                            $sql = 'UPDATE CuentaDeAhorros set javeCoins='.$resta. ' where id = '.$_POST["cuenta"];
+                                            $suma = $fila['javeCoins']+$_POST["monto"];
+                                            $sql = 'UPDATE CuentaDeAhorros set javeCoins='.$suma;
                                             if(mysqli_query($con,$sql)){ 
-                                                $message = "saldo actualizado, nuevo monto: ".$resta;
+                                                $message = "saldo actualizado, nuevo monto: ".$suma;
                                             } else{ 
                                                 $message = "Error actualizando monto ".mysqli_error($con); 
                                             } 
@@ -59,7 +59,7 @@
                             }
                         }
                         $str_pagina = "";
-                        $str_pagina.= '<h1>has venido a retirar</h1>';
+                        $str_pagina.= '<h1>has venido a consignar</h1>';
                         $str_pagina.= '<p>Selecciona una de tus cuentas</p>';
                         
                         $str_pagina.= '<form action=" '.$_SERVER['PHP_SELF'].' " method="post">';
@@ -84,27 +84,21 @@
                         }                                           
                         $str_pagina.= '<span>'. $cuentae .'</span>';
                         $str_pagina.= '<br>';
-                        $str_pagina.= 'Monto a retirar: <input type="num" name="monto" value="';
+                        $str_pagina.= 'Monto a consignar: <input type="num" name="monto" value="';
                         if(isset($_POST["monto"]))  $str_pagina.=$_POST["monto"];
                         $str_pagina.= '"/>';
                         $str_pagina.= '<span>'. $montoe. '</span>';
                         $str_pagina.= '<br>';
-                        $str_pagina.= '<input type="submit" value="Realizar retiro" name="submit"/>';                      
+                        $str_pagina.= '<input type="submit" value="Consignar" name="submit"/>';                      
                         $str_pagina.= '</form>';
                         $str_pagina.= '<br>';
                         $str_pagina.= $message;
                         echo $str_pagina;
+                        echo '<a href=http://localhost/PHP-Proyecto/consignar.php> Consignar un crédito </a><br>';
                         echo '<a href=http://localhost/PHP-Proyecto/Cliente/index.php> Volver </a><br>';                                     
                     }
-                    else if ($_SESSION['rol'] == 'admin'){
-                        header("HTTP/1.1 401 Unauthorized");
-                    }
-                    else{                        
-                        header("localhost/PHP-Proyecto/login.php");
-                    }
                 }
-                else{
-                    echo '<h1>has venido a comprar</h1>';
+                else{                    
                     header("Location: http://localhost/PHP-Proyecto/login.php");
                 }
                 ?>                                                                                               		

@@ -17,7 +17,7 @@
 					echo '<a href=http://localhost/PHP-Proyecto/Cliente/crearCredito.php> Abre un crédito </a><br><br>';
 					echo '<a href=http://localhost/PHP-Proyecto/Cliente/retiro.php> Retira tus JaveCoins </a><br>';
 					echo '<a href=http://localhost/PHP-Proyecto/Cliente/comprar.php> Realiza una compra </a><br>';
-					echo '<a href=http://localhost/PHP-Proyecto/Cliente/consignar.php> Consigna dinero a una cuenta </a><br>';
+					echo '<a href=http://localhost/PHP-Proyecto/Cliente/consignarACuenta.php> Consigna dinero a una cuenta </a><br>';
 					echo '<a href=http://localhost/PHP-Proyecto/logout.php> Salir </a><br>';
 				}
 				else{

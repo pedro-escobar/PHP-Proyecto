@@ -5,7 +5,7 @@
     <html>
         <head>
             <meta charset="UTF-8">
-            <title>Página de retiros</title>
+            <title>Página de consignar creditos</title>
         </head>
         <body>        
             <?php       
@@ -59,7 +59,7 @@
                             }
                         }
                         $str_pagina = "";
-                        $str_pagina.= '<h1>has venido a retirar</h1>';
+                        $str_pagina.= '<h1>has venido a consignar a un credito</h1>';
                         $str_pagina.= '<p>Selecciona una de tus cuentas</p>';
                         
                         $str_pagina.= '<form action=" '.$_SERVER['PHP_SELF'].' " method="post">';
@@ -69,15 +69,17 @@
                             $str_pagina.= "Error en la conexión: " . mysqli_connect_error(); 
                         } 
                         else{
-                            $checkPK = 'SELECT * FROM  CuentaDeAhorros  WHERE IdCliente ='.$_SESSION["id"];
+                            $checkPK = 'SELECT * FROM  Creditos';
                             $resultado = mysqli_query($con, $checkPK);                                                  
                             if(!mysqli_num_rows($resultado)){
-                                $str_pagina.= '--No tienes Cuentas--';
+                                $str_pagina.= '--No hay creditos para consignar--';
                             }
                             else{
                                 $str_pagina.= '<select name="cuenta">';
-                                while($fila = mysqli_fetch_array($resultado)) {                         
-                                    $str_pagina.= '<option value="'.$fila['id'].'"> No '.$fila['id'].'</option>';
+                                while($fila = mysqli_fetch_array($resultado)) {  
+                                    if($fila['aprobado']){
+                                        $str_pagina.= '<option value="'.$fila['id'].'"> No '.$fila['id'].'</option>';
+                                    }                                                           
                                 }
                                 $str_pagina.='</select>';                                
                             }                            

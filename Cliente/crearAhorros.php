@@ -46,32 +46,6 @@
                                     }
                                 }  
                             }                           
-                        }
-                        if ($_POST['submit'] == '--Borrar cuenta ingresada--') {
-                            $flag=true;
-                            if(isset($_POST['cuenta'])){
-                                if(empty($_POST["cuenta"])){
-                                    $cuentae = "La id de cuenta es requerida";
-                                    $flag = false;
-                                }
-                                else if(!filter_var($_POST["cuenta"], FILTER_VALIDATE_INT)) {
-                                    $cuentae = "Formato de cuenta incorrecto, ingrese solo números";
-                                    $flag = false;    
-                                }
-                                if($flag){
-                                    $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
-                                    if (mysqli_connect_errno()) { 
-                                        $str_datos.= "Error en la conexión: " . mysqli_connect_error();
-                                    }
-                                    $sql = 'DELETE from CuentaDeAhorros where id='.$_POST['cuenta'];
-                                    if(mysqli_query($con,$sql)){
-                                        $message = "cuenta eliminada";
-                                        $_POST['cuenta'] = $_POST['javecoins'] ="";  
-                                    } else{ 
-                                        $message =  "Error borrando cuenta".mysqli_error($con); 
-                                    } 
-                                }                        
-                            }                 
                         }  
                     }                    
                     $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);                 
@@ -85,13 +59,6 @@
                         $str_pagina.= '">';
                         $str_pagina.= '<span>'. $javecoine. '</span><br>';                                                
                         $str_pagina.= '<input type="submit" value="--Crear una nueva cuenta--" name="submit" />';                          
-                        $str_pagina.='</form>';
-                        $str_pagina.= '<form action=" '.$_SERVER['PHP_SELF'].' " method="post">';
-                        $str_pagina.= 'Ingresa una tarjeta para borrarla: <input type="num" name="cuenta" value= " ';
-                        if(isset($_POST["cuenta"]))  $str_pagina.=$_POST["cuenta"];
-                        $str_pagina.= '">';
-                        $str_pagina.= '<span>'. $cuentae. '</span><br>';                       
-                        $str_pagina.= '<input type="submit" value="--Borrar cuenta ingresada--" name="submit" />';
                         $str_pagina.='</form>';
                         $checkPK = 'SELECT * FROM CuentaDeAhorros WHERE IdCliente = '.$_SESSION["id"];
                         $resultado = mysqli_query($con, $checkPK); 
@@ -124,7 +91,7 @@
 				}
 			}
 			else{
-				header("Location: /PHP-Proyecto/login.php");
+				//header("Location: /PHP-Proyecto/login.php");
 			}
 		?>		
 	</body>
