@@ -1,82 +1,103 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
     <html>
         <head>
             <meta charset="UTF-8">
-            <title>Página principal del proyecto</title>
+            <title>Página de compras</title>
         </head>
-        <body>
-            <?php	
-                include_once dirname(__FILE__) . '/../Utils/config.php'; 
-                $flag = true;
-                $tarjee = $monedae = $montoe = "";  
-                $options = array('options' => array('min_range' => 0));
-                if(isset($_POST['submit'])){                
-                    if(empty($_POST["monto"])){
-                        $montoe = "Ingresa un monto";
-                        $flag = false;
-                    }
-                    else if(!filter_var($_POST["monto"], FILTER_VALIDATE_FLOAT, $options)) {
-                        $montoe = "Formato de monto incorrecto, ingrese solo números mayores a cero";
-                        $flag = false;    
-                    }
-                    if(empty($_POST["moneda"])){
-                        $monedae = "Elige una denominacion";
-                        $flag = false;
-                    }
-                    if(empty($_POST["tarjeta"])){
-                        $tarjee = "La tarjeta es requerida";
-                        $flag = false;
-                    }
-                }
-                echo '<h1>has venido a comprar</h1>';
-                echo '<p>Selecciona una de tus tarjetas</p>';
-            ?>
-                <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
-                    Tarjeta:
-                    <?php
+        <body>        
+            <?php       
+                include_once dirname(__FILE__) . '/../Utils/config.php';      
+                if (isset($_SESSION['rol'])) {
+                    if ($_SESSION['rol'] == 'cliente'){
+                        $flag = true;
+                        $tarjee = $monedae = $montoe = "";  
+                        $options = array('options' => array('min_range' => 0));
+                        if(isset($_POST['submit'])){                
+                            if(empty($_POST["monto"])){
+                                $montoe = "Ingresa un monto";
+                                $flag = false;
+                            }
+                            else if(!filter_var($_POST["monto"], FILTER_VALIDATE_FLOAT, $options)) {
+                                $montoe = "Formato de monto incorrecto, ingrese solo números mayores a cero";
+                                $flag = false;    
+                            }
+                            if(empty($_POST["moneda"])){
+                                $monedae = "Elige una denominacion";
+                                $flag = false;
+                            }
+                            if(empty($_POST["tarjeta"])){
+                                $tarjee = "La tarjeta es requerida";
+                                $flag = false;
+                            }
+                        }
+                        $str_pagina = "";
+                        $str_pagina.= '<h1>has venido a comprar</h1>';
+                        $str_pagina.= '<p>Selecciona una de tus tarjetas</p>';
+                        
+                        $str_pagina.= '<form action=" '.$_SERVER['PHP_SELF'].' " method="post">';
+                        $str_pagina.= 'Tarjeta:';                        
                         $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB); 
                         if (mysqli_connect_errno()) { 
-                            echo "Error en la conexión: " . mysqli_connect_error(); 
+                            $str_pagina.= "Error en la conexión: " . mysqli_connect_error(); 
                         } 
                         else{
-                            $checkPK = 'SELECT * FROM  TarjetasCredito  WHERE IdCliente = '.$_SESSION["Id"];
+                            $checkPK = 'SELECT * FROM  TarjetasCredito  WHERE IdCliente = '.$_SESSION["id"];
                             $resultado = mysqli_query($con, $checkPK);                                                  
                             if(!mysqli_num_rows($resultado)){
-                                echo '--No tienes tarjetas--';
+                                $str_pagina.= '--No tienes tarjetas--';
                             }
                             else{
-                                $str_datos = '<select> name="tarjeta"';
+                                $str_pagina.= '<select> name="tarjeta"';
                                 while($fila = mysqli_fetch_array($resultado)) {                         
-                                    $str_datos.= '<option value="'.$fila['Id'].'> Tarjeta Id '.$fila['Id'].'</option>';
+                                    $str_pagina.= '<option value="'.$fila['Id'].'> Tarjeta Id '.$fila['Id'].'</option>';
                                 }
-                                $str_datos.='</select>';
-                                echo $str_datos;
+                                $str_pagina.='</select>';                                
                             }                            
+                        }                                           
+                        $str_pagina.= '<span>'. $tarjee .'</span>';
+                        $str_pagina.= '<br>';
+                        $str_pagina.= 'Cuotas:';     
+                                                       
+                        $str_pagina.= '<select> ';
+                        for ($i = 1; $i <= 6; $i++) {                         
+                            $str_pagina.= '<option value="'.$i.'"> '.$i.' Meses </option>';
                         }
-                    ?>                    
-                    <span> <?php echo $tarjee?></span>
-                    <br>
-                    Cuotas:     
-                        <?php                            
-                            $str_datos = '<select> ';
-                            for ($i = 1; $i <= 6; $i++) {                         
-                                $str_datos.= '<option value="'.$i.'"> '.$i.' Meses </option>';
-                            }
-                            $str_datos.='</select>';
-                            echo $str_datos;                            
-                        ?>                                                   
-                    <br>
-                    Moneda a retirar: 
-                    <input type="radio" name="moneda" value="javecoin" <?php if(isset($_POST["moneda"]) && $_POST["moneda"]=="javecoin") echo 'checked="checked"'; ?>> Javecoin
-                    <input type="radio" name="moneda" value="pesos" <?php if(isset($_POST["moneda"]) && $_POST["moneda"]=="pesos") echo 'checked="checked"'; ?>> Pesos
-                    <br>
-                    <span> <?php echo $monedae?></span>
-                    <br>
-                    Monto: <input type="num" name="monto" value=<?php if(isset($_POST["monto"])) echo $_POST["monto"]; ?>>
-                    <span> <?php echo $montoe?></span>
-                    <br>                    
-                    <input type="submit" value="Comprar" name="submit" />                      
-                </form>
-                <br>                                                		
+                        $str_pagina.='</select>';                                                                                                                                
+                        $str_pagina.= '<br>';
+                        $str_pagina.= 'Moneda a retirar: ';
+                        $str_pagina.= '<input type="radio" name="moneda" value="javecoin" ';
+                        if(isset($_POST["moneda"]) && $_POST["moneda"]=="javecoin") $str_pagina.='checked="checked"';
+                        $str_pagina.= '> Javecoin';
+                        $str_pagina.= '<input type="radio" name="moneda" value="pesos"';
+                        if(isset($_POST["moneda"]) && $_POST["moneda"]=="pesos") $str_pagina.='checked="checked"';
+                        $str_pagina.='> Pesos';
+                        $str_pagina.= '<br>';
+                        $str_pagina.= '<span> '. $monedae .'</span>';
+                        $str_pagina.= '<br>';
+                        $str_pagina.= 'Monto: <input type="num" name="monto" value= " ';
+                        if(isset($_POST["monto"]))  $str_pagina.=$_POST["monto"];
+                        $str_pagina.= '">';
+                        $str_pagina.= '<span>'. $montoe. '</span>';
+                        $str_pagina.= '<br>';
+                        $str_pagina.= '<input type="submit" value="Comprar" name="submit" />';                      
+                        $str_pagina.= '</form>';
+                        $str_pagina.= '<br>';  
+                        echo $str_pagina;                                     
+                    }
+                    else if ($_SESSION['rol'] == 'admin'){
+                        header("HTTP/1.1 401 Unauthorized");
+                    }
+                    else{                        
+                        header("localhost/PHP-Proyecto/login.php");
+                    }
+                }
+                else{
+                    echo '<h1>has venido a comprar</h1>';
+                    header("Location: http://localhost/PHP-Proyecto/login.php");
+                }
+                ?>                                                                                               		
         </body>
     </html>
